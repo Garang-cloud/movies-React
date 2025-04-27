@@ -1,9 +1,12 @@
+import React, { useState } from "react";
+
 const AddMovie = ({ setMovies }) => {
   const [newMovie, setNewMovie] = useState({
     title: "",
     description: "",
     posterURL: "",
     rating: 0,
+    trailer: "", // Add trailer field
   });
 
   const handleAdd = () => {
@@ -36,7 +39,14 @@ const AddMovie = ({ setMovies }) => {
         placeholder="Rating"
         onChange={(e) => setNewMovie({ ...newMovie, rating: +e.target.value })}
       />
+      <input
+        type="text"
+        placeholder="Trailer Link"
+        onChange={(e) => setNewMovie({ ...newMovie, trailer: e.target.value })}
+      />
       <button onClick={handleAdd}>Add Movie</button>
     </div>
   );
 };
+
+export default AddMovie;

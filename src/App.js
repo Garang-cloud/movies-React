@@ -1,40 +1,33 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import AddMovie from "./AddMovie";
 import MovieList from "./MovieList";
-import Filter from "./Filter";
+import MovieDetails from "./MovieDetails";
 
 const App = () => {
-  const [movies, setMovies] = useState([
-    {
-      title: "Inception",
-      description: "Mind-bending thriller",
-      posterURL: "inception.jpg",
-      rating: 5,
-    },
-    {
-      title: "Interstellar",
-      description: "Space adventure",
-      posterURL: "interstellar.jpg",
-      rating: 5,
-    },
-  ]);
+  const [movies, setMovies] = useState([]);
+  const [currentView, setCurrentView] = useState("home");
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
-  const [filterTitle, setFilterTitle] = useState("");
-  const [filterRating, setFilterRating] = useState("");
+  const handleViewDetails = (movie) => {
+    setSelectedMovie(movie);
+    setCurrentView("details");
+  };
 
-  const filteredMovies = movies.filter(
-    (movie) =>
-      movie.title.toLowerCase().includes(filterTitle.toLowerCase()) &&
-      movie.rating >= (filterRating || 0)
-  );
+  const handleBackToHome = () => {
+    setCurrentView("home");
+  };
 
   return (
     <div>
-      <h1>My Favorite Movies</h1>
-      <Filter
-        setFilterTitle={setFilterTitle}
-        setFilterRating={setFilterRating}
-      />
-      <MovieList movies={filteredMovies} />
+      {currentView === "home" && (
+        <>
+          <AddMovie setMovies={setMovies} />
+          <MovieList movies={movies} onViewDetails={handleViewDetails} />
+        </>
+      )}
+      {currentView === "details" && (
+        <MovieDetails movie={selectedMovie} onBack={handleBackToHome} />
+      )}
     </div>
   );
 };
